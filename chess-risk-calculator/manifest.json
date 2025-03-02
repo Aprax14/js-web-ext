@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "Chess Risk Calculator",
+  "version": "0.0.1",
+  "description": "Chess match calculator on chess.com",
+  "icons": {
+    "16": "static/icon16.png",
+    "32": "static/icon32.png",
+    "64": "static/icon64.png",
+    "128": "static/icon128.png"
+  },
+  "permissions": ["scripting", "activeTab"],
+  "host_permissions": ["https://www.chess.com/*"],
+  "action": {
+    "default_popup": "popup.html"
+  }
+}
