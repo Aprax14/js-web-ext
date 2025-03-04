@@ -28,6 +28,16 @@ function chessRiskCalculator() {
         : null;
     };
     
+    const getCurrentCategoryRating = (divId) => {
+      const userDiv = document.getElementById(divId);
+      return parseInt(
+        userDiv.querySelector("span.user-tagline-rating")
+          .innerHTML
+          .replace("(", "")
+          .replace(")", "")
+      )
+    }
+    
     const archiveList = async (username) => {
       const archivesResponse = await fetch(
         `https://api.chess.com/pub/player/${username}/games/archives`,
@@ -120,9 +130,14 @@ function chessRiskCalculator() {
     ) => {
       const winProbability = 1 / (1 + Math.pow(10, (opponentElo - myElo) / 400));
       const lossProbability = 1 - winProbability;
+      
+      const opponentCategoryElo = getCurrentCategoryRating(opponentDivId);
+      const myCategoryElo = getCurrentCategoryRating(myDivId);
+      const categoryWinProbability = 1 / (1 + Math.pow(10, (opponentCategoryElo - myCategoryElo) / 400));
+      const categoryLossProbability = 1 - categoryWinProbability;
     
-      const potentialPointLoss = kFactor * winProbability;
-      const potentialPointGain = kFactor * lossProbability;
+      const potentialPointLoss = kFactor * categoryWinProbability;
+      const potentialPointGain = kFactor * categoryLossProbability;
     
       const normalizedThreat = (opponentThreatLevel + 1) / 2;  // from -1..1 to 0..1
       const normalizedDefense = (myDefenseLevel + 1) / 2;
